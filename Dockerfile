@@ -57,17 +57,17 @@ RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
     && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
     && chmod +x /usr/local/bin/gosu \
-    && gosu nobody true
+  && gosu nobody true \
   # Build NiceHash Equihash Miner
-RUN gosu nicehash mkdir -p /tmp/build && chown nicehash:nicehash /tmp/build \
-    && gosu nicehash git clone "$NHEQMINER_GIT_URL" /tmp/build/nheqminer \
+    && gosu nicehash mkdir -p /tmp/build && chown nicehash:nicehash /tmp/build \
+    && gosu nicehash git clone -b "$NHEQMINER_BRANCH" "$NHEQMINER_GIT_URL" /tmp/build/nheqminer \
     && cd /tmp/build/nheqminer/cpu_xenoncat/Linux/asm/ \
     && gosu nicehash sh assemble.sh \
     && cd ../../../Linux_cmake/nheqminer_cpu \
     && gosu nicehash cmake . \
-    && gosu nicehash make
+    && gosu nicehash make \
   # Install nheqminer_cpu
-RUN /usr/bin/install -g nicehash -o nicehash -s -c nheqminer -t /usr/local/bin/ \
+    && /usr/bin/install -g nicehash -o nicehash -s -c nheqminer_cpu -t /usr/local/bin/ \
   # Cleanup
     && rm -rf /tmp/build/ \
     && apt-get purge -y --auto-remove \
