@@ -56,7 +56,7 @@ RUN DEBIAN_FRONTEND=noninteractive; \
     && cmake . \
     && make \
   # Install nheqminer_cpu
-    && cp nheqminer /usr/bin/nheqminer \
+    && cp /tmp/build/nheqminer/Linux_cmake/nheqminer_cpu/nheqminer /usr/bin/nheqminer \
   # Cleanup
     && rm -rf /tmp/build/ \
     && apt-get purge -y --auto-remove \
