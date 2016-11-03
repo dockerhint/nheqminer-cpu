@@ -27,7 +27,6 @@
 # Last change:
 # * Allow any Stratum based pool, add suprnova default (6086f95) 
 
-
 FROM ubuntu:16.04
 MAINTAINER BitBuyIO <developer@bitbuy.io>
 
