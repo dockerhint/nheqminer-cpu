@@ -34,7 +34,7 @@ MAINTAINER BitBuyIO <developer@bitbuy.io>
 RUN groupadd -r nicehash \
   && useradd -r -g nicehash -m -d /home/nicehash/ -G sudo nicehash
 
-ARG NHEQMINER_GIT_URL=https://github.com/sarath-hotspot/nheqminer.git
+ARG NHEQMINER_GIT_URL=https://github.com/dockerhint/nheqminer.git
 ARG NHEQMINER_BRANCH=master
 
 ENV GOSU_VERSION 1.10
