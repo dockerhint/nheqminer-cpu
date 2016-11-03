@@ -30,11 +30,8 @@
 FROM ubuntu:16.04
 MAINTAINER BitBuyIO <developer@bitbuy.io>
 
-RUN groupadd -r nicehash \
-  && useradd -r -g nicehash -m -d /home/nicehash/ -G sudo nicehash
-
-ARG NHEQMINER_GIT_URL=https://github.com/ocminer/nheqminer.git
-ARG NHEQMINER_BRANCH=master
+ARG NHEQMINER_GIT_URL=https://github.com/nicehash/nheqminer.git
+ARG NHEQMINER_BRANCH=linux
 
 ENV GOSU_VERSION 1.10
 
@@ -47,27 +44,19 @@ RUN DEBIAN_FRONTEND=noninteractive; \
     git \
     libboost-all-dev \
     wget \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* \
   # Get gosu
-RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
-    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
-    && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc" \
-    && export GNUPGHOME="$(mktemp -d)" \
-    && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-    && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
-    && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
-    && chmod +x /usr/local/bin/gosu \
-  && gosu nobody true \
+    
   # Build NiceHash Equihash Miner
-    && gosu nicehash mkdir -p /tmp/build && chown nicehash:nicehash /tmp/build \
-    && gosu nicehash git clone -b "$NHEQMINER_BRANCH" "$NHEQMINER_GIT_URL" /tmp/build/nheqminer \
+    && mkdir -p /tmp/build && chown nicehash:nicehash /tmp/build \
+    && git clone "$NHEQMINER_GIT_URL" /tmp/build/nheqminer \
     && cd /tmp/build/nheqminer/cpu_xenoncat/Linux/asm/ \
-    && gosu nicehash sh assemble.sh \
+    && sh assemble.sh \
     && cd ../../../Linux_cmake/nheqminer_cpu \
-    && gosu nicehash cmake . \
-    && gosu nicehash make \
+    && cmake . \
+    && make \
   # Install nheqminer_cpu
-    && /usr/bin/install -g nicehash -o nicehash -s -c nheqminer_cpu -t /usr/local/bin/ \
+    && cp nheqminer /usr/bin/nheqminer \
   # Cleanup
     && rm -rf /tmp/build/ \
     && apt-get purge -y --auto-remove \
@@ -84,3 +73,4 @@ RUN chmod +x /home/nicehash/entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
 CMD ["-h"]
+
