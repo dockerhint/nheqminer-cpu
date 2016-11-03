@@ -60,12 +60,11 @@ RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && gosu nobody true
   # Build NiceHash Equihash Miner
 RUN gosu nicehash mkdir -p /tmp/build && chown nicehash:nicehash /tmp/build \
-    && gosu nicehash git clone -b "$NHEQMINER_BRANCH" "$NHEQMINER_GIT_URL" /tmp/build/nheqminer \
+    && gosu nicehash git clone "$NHEQMINER_GIT_URL" /tmp/build/nheqminer \
     && cd /tmp/build/nheqminer/cpu_xenoncat/Linux/asm/ \
-    && gosu nicehash chmod +x assemble.sh \
     && gosu nicehash sh assemble.sh \
     && cd ../../../Linux_cmake/nheqminer_cpu \
-    && gosu nicehash cmake .. \
+    && gosu nicehash cmake . \
     && gosu nicehash make
   # Install nheqminer_cpu
 RUN /usr/bin/install -g nicehash -o nicehash -s -c nheqminer -t /usr/local/bin/ \
