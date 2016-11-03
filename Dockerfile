@@ -35,7 +35,7 @@ RUN groupadd -r nicehash \
   && useradd -r -g nicehash -m -d /home/nicehash/ -G sudo nicehash
 
 ARG NHEQMINER_GIT_URL=https://github.com/ocminer/nheqminer.git
-ARG NHEQMINER_BRANCH=linux
+ARG NHEQMINER_BRANCH=master
 
 ENV GOSU_VERSION 1.10
 
