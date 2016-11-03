@@ -48,7 +48,7 @@ RUN DEBIAN_FRONTEND=noninteractive; \
   # Get gosu
     
   # Build NiceHash Equihash Miner
-    && mkdir -p /tmp/build && chown nicehash:nicehash /tmp/build \
+    && mkdir -p /tmp/build \
     && git clone "$NHEQMINER_GIT_URL" /tmp/build/nheqminer \
     && cd /tmp/build/nheqminer/cpu_xenoncat/Linux/asm/ \
     && sh assemble.sh \
