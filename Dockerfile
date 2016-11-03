@@ -25,15 +25,13 @@
 # 3) happyness
 #
 # Last change:
-# * Allow any Stratum based pool, add suprnova default (6086f95) 
+# * Allow any Stratum based pool, add suprnova default (6086f95)
 
 FROM ubuntu:16.04
 MAINTAINER BitBuyIO <developer@bitbuy.io>
 
 ARG NHEQMINER_GIT_URL=https://github.com/nicehash/nheqminer.git
 ARG NHEQMINER_BRANCH=linux
-
-ENV GOSU_VERSION 1.10
 
 RUN DEBIAN_FRONTEND=noninteractive; \
   apt-get autoclean && apt-get autoremove && apt-get update \
@@ -71,5 +69,4 @@ WORKDIR /home/nicehash
 COPY entrypoint.sh /home/nicehash/entrypoint.sh
 RUN chmod +x /home/nicehash/entrypoint.sh
 
-ENTRYPOINT ["./entrypoint.sh"]
-CMD ["-h"]
+CMD ["./entrypoint.sh"]
