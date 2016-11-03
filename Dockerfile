@@ -44,19 +44,19 @@ RUN DEBIAN_FRONTEND=noninteractive; \
     git \
     libboost-all-dev \
     wget \
-  && rm -rf /var/lib/apt/lists/* \
+  && rm -rf /var/lib/apt/lists/*
   # Get gosu
-    
+
   # Build NiceHash Equihash Miner
-    && mkdir -p /tmp/build \
+RUN mkdir -p /tmp/build \
     && git clone "$NHEQMINER_GIT_URL" /tmp/build/nheqminer \
     && cd /tmp/build/nheqminer/cpu_xenoncat/Linux/asm/ \
     && sh assemble.sh \
     && cd ../../../Linux_cmake/nheqminer_cpu \
     && cmake . \
-    && make \
+    && make
   # Install nheqminer_cpu
-    && cp /tmp/build/nheqminer/Linux_cmake/nheqminer_cpu/nheqminer /usr/bin/nheqminer \
+RUN cp /tmp/build/nheqminer/Linux_cmake/nheqminer_cpu/nheqminer_cpu /usr/bin/nheqminer \
   # Cleanup
     && rm -rf /tmp/build/ \
     && apt-get purge -y --auto-remove \
@@ -73,4 +73,3 @@ RUN chmod +x /home/nicehash/entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
 CMD ["-h"]
-
